@@ -1,5 +1,5 @@
 # CS310MobileApplicationDevelopmentProject
-This is a group project for CS310 class in Sabancı University. Here are the names of the groupmembers
+This is a group project for CS310 class in Sabancı University. Here are the names of the group members:
 
 Alper Arda Olgun (31199)
 Arda Tibet Kaya (26763)
