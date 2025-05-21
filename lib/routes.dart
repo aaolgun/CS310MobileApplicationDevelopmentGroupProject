@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// 🧭 Import all screens
 import 'screens/welcome.dart';
 import 'screens/login.dart';
 import 'screens/create_account.dart';

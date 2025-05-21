@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import '../widgets/responsive_input_field.dart';
 import '../widgets/responsive_button.dart';
-import '../theme.dart';
-import '../utils/navigation.dart';
+
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -28,12 +29,12 @@ class Login extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 children: [
                   ResponsiveInputField(
                     hintText: "email@domain.com",
-                    controller: _emailController,
+                    controller: emailController,
                     obscure: false,
                     validator: (value) {
                       if (value == null || !value.contains('@')) {
@@ -45,7 +46,7 @@ class Login extends StatelessWidget {
                   const SizedBox(height: 10),
                   ResponsiveInputField(
                     hintText: "Password",
-                    controller: _passwordController,
+                    controller: passwordController,
                     obscure: true,
                     validator: (value) {
                       if (value == null || value.length < 6) {
@@ -60,29 +61,33 @@ class Login extends StatelessWidget {
             const SizedBox(height: 20),
             ResponsiveButton(
               text: "Log in",
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  Navigator.pushNamedAndRemoveUntil(context, "/weather", (route) => false);
-                } else {
+              onPressed: () async {
+                if (!formKey.currentState!.validate()) return;
+
+                try {
+                  await context.read<AuthProvider>()
+                      .login(
+                    emailController.text.trim(),
+                    passwordController.text.trim(),
+                  );
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/weather", (r) => false);
+                } catch (e) {
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Invalid Form"),
-                        content: const Text("Please fill in all fields correctly."),
-                        actions: [
-                          TextButton(
-                            child: const Text("OK"),
-                            onPressed: () => Navigator.of(context).pop(),
-                          ),
-                        ],
-                      );
-                    },
+                    builder: (_) => AlertDialog(
+                      title: Text("Please fill in all fields correctly."),
+                      content: Text(e.toString()),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text("OK"),
+                        )
+                      ],
+                    ),
                   );
                 }
               },
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
             ),
             const SizedBox(height: 10),
             const Text("----------or----------"),

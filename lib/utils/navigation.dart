@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../screens/welcome.dart';
 import '../screens/login.dart';
-import '../screens/create_account.dart';
 import '../screens/weather.dart';
 import '../screens/closet.dart';
 import '../screens/add_item.dart';

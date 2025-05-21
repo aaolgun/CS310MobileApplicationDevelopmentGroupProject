@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
 import '../utils/navigation.dart';
 import '../widgets/main_scaffold.dart';
 import 'login.dart';
+
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthProvider>().user;
+
     return MainScaffold(
       currentIndex: 4,
       body: Scaffold(
@@ -36,21 +40,32 @@ class ProfilePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              const CircleAvatar(
-                radius: 70,
-                backgroundImage: AssetImage("profile_picture.png"),
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: user?.photoURL != null
+                    ? NetworkImage(user!.photoURL!)
+                    : null,
+                child: user?.photoURL == null
+                    ? Icon(Icons.person, size: 50, color: Colors.white70)
+                    : null,
+                backgroundColor: Colors.grey[300],
               ),
               const SizedBox(height: 20),
-              const Text(
-                "John Doe",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Text(
+                user?.displayName ?? 'No name set',
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const Text(
-                "john.doe@example.com",
+              Text(
+                user?.email ?? 'No email 🤷‍♀️',
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 10),
-              const Text("User since: January 2024"),
+              Text(
+                'User since: ${user?.metadata.creationTime?.toLocal().toString().split(' ')[0] ?? 'unknown'}',
+              ),
               const SizedBox(height: 30),
               const Text(
                 "Saved Items",
@@ -99,6 +114,7 @@ class ProfilePage extends StatelessWidget {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
+                  context.read<AuthProvider>().logout();
                   navigateBack(context, fallbackWidget: const Login());
                 },
                 child: const Text("Log Out"),

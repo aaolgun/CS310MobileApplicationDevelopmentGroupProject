@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/main_scaffold.dart';
-import '../theme.dart';
 
 class Weather extends StatelessWidget {
   const Weather({super.key});

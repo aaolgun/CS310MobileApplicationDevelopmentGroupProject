@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/main_scaffold.dart';
-import '../theme.dart';
 import 'dart:async';
 
 class Welcome extends StatefulWidget {

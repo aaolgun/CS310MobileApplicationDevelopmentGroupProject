@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/main_scaffold.dart';
-import '../theme.dart';
 
 class ResponsiveInputField extends StatelessWidget {
   final String hintText;

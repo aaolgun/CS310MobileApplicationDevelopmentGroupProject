@@ -3,22 +3,23 @@ import '../widgets/responsive_input_field.dart';
 import '../widgets/responsive_button.dart';
 import '../widgets/birthdate_picker_field.dart';
 import '../widgets/gender_picker_field.dart';
-import '../theme.dart';
-import 'weather.dart';
 import '../utils/navigation.dart';
+
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class CreateAccount extends StatelessWidget {
   const CreateAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
-    final _nameController = TextEditingController();
-    final _birthdateController = TextEditingController();
-    final _genderController = TextEditingController();
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
+    final nameController = TextEditingController();
+    final birthdateController = TextEditingController();
+    final genderController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,30 +36,30 @@ class CreateAccount extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 children: [
                   ResponsiveInputField(
                     hintText: "Name",
-                    controller: _nameController,
+                    controller: nameController,
                     validator: (value) =>
                     value == null || value.isEmpty ? 'Name cannot be empty.' : null,
                   ),
                   const SizedBox(height: 10),
-                  BirthdatePickerField(controller: _birthdateController),
+                  BirthdatePickerField(controller: birthdateController),
                   const SizedBox(height: 10),
-                  GenderPickerField(controller: _genderController),
+                  GenderPickerField(controller: genderController),
                   const SizedBox(height: 10),
                   ResponsiveInputField(
                     hintText: "email@domain.com",
-                    controller: _emailController,
+                    controller: emailController,
                     validator: (value) =>
                     value == null || !value.contains('@') ? 'Enter a valid email.' : null,
                   ),
                   const SizedBox(height: 10),
                   ResponsiveInputField(
                     hintText: "Password",
-                    controller: _passwordController,
+                    controller: passwordController,
                     obscure: true,
                     validator: (value) =>
                     value == null || value.length < 6
@@ -68,27 +69,32 @@ class CreateAccount extends StatelessWidget {
                   const SizedBox(height: 20),
                   ResponsiveButton(
                     text: "Create account",
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                    onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
+
+                      try {
+                        await context.read<AuthProvider>()
+                            .signUp(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        );
                         navigateToNamedForward(context, "/weather");
-                      } else {
+                      } catch (e) {
                         showDialog(
                           context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Invalid Form"),
-                            content: const Text("Please fill in all fields correctly."),
+                          builder: (_) => AlertDialog(
+                            title: Text("Please fill in all fields correctly."),
+                            content: Text(e.toString()),
                             actions: [
                               TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text("OK"),
-                              ),
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("OK"),
+                              )
                             ],
                           ),
                         );
                       }
                     },
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
                   ),
                 ],
               ),

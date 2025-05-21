@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/main_scaffold.dart';
-import '../theme.dart';
+import 'responsive_input_field.dart';
 
 class GenderPickerField extends StatefulWidget {
   final TextEditingController controller;
@@ -24,6 +23,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
       child: SizedBox(
         width: screenWidth * 0.85,
         child: DropdownButtonFormField<String>(
+          style: Theme.of(context).textTheme.bodyMedium,
           value: _selected,
           items: _options
               .map((option) => DropdownMenuItem(
@@ -37,8 +37,9 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
               widget.controller.text = value!;
             });
           },
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            enabledBorder: const OutlineInputBorder(),
             hintText: "Select your gender",
           ),
           validator: (value) =>

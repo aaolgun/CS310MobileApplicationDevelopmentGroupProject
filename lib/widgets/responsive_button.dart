@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/main_scaffold.dart';
-import '../theme.dart';
 
 class ResponsiveButton extends StatelessWidget {
   final String text;

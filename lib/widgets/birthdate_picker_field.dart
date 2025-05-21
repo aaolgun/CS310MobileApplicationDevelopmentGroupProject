@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/main_scaffold.dart';
-import '../theme.dart';
+import "responsive_input_field.dart";
 
 class BirthdatePickerField extends StatefulWidget {
   final TextEditingController controller;
@@ -23,8 +22,9 @@ class _BirthdatePickerFieldState extends State<BirthdatePickerField> {
         child: TextFormField(
           controller: widget.controller,
           readOnly: true,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            enabledBorder: const OutlineInputBorder(),
             hintText: "Birthdate (DD MM YYYY)",
             suffixIcon: Icon(Icons.calendar_today),
           ),
@@ -45,7 +45,7 @@ class _BirthdatePickerFieldState extends State<BirthdatePickerField> {
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Birthdate cannot be empty.';
+              return 'Birth date cannot be empty.';
             }
 
             final parts = value.split(' ');

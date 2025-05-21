@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
-import '../utils/navigation.dart';
 import '../widgets/main_scaffold.dart';
 
 class AccountSettingsPage extends StatelessWidget {
