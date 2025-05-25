@@ -11,4 +11,3 @@ This project aims to make an mobile application that can be used for taking advi
 
 This project will be using flutter, dart as the main programming language as they give flexibility to make an application for both Android and IOS.
 
-As some technical details are not yet concrete we have decided to add them later during the project as they are finalized get ready to be used.
